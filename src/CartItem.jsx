@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { removeItem, updateQuantity } from './CartSlice';
+import { removeItem, updateQuantity, addItem } from './CartSlice'; // Import addItem action
 import './CartItem.css';
 
-const CartItem = ({ onContinueShopping }) => {
+const CartItem = ({ onContinueShopping, onAddItem }) => {
   const cart = useSelector(state => state.cart.items);
   const dispatch = useDispatch();
 
@@ -12,7 +12,7 @@ const CartItem = ({ onContinueShopping }) => {
     return cart.reduce((total, item) => total + calculateTotalCost(item), 0).toFixed(2);
   };
 
-  const handleContinueShopping = (e) => {
+  const handleContinueShopping = () => {
     onContinueShopping(); // Call the function passed from the parent component
   };
 
@@ -30,6 +30,10 @@ const CartItem = ({ onContinueShopping }) => {
 
   const handleRemove = (item) => {
     dispatch(removeItem(item.name)); // Remove item from cart
+  };
+
+  const handleAddItem = (item) => {
+    dispatch(addItem({ ...item, quantity: 1 })); // Dispatch an action to add the item with quantity 1
   };
 
   // Calculate total cost based on quantity for an item
@@ -64,6 +68,10 @@ const CartItem = ({ onContinueShopping }) => {
         <br />
         <button className="get-started-button1" onClick={() => alert('Functionality to be added for future reference')}>Checkout</button>
       </div>
+      {/* Example button to add an item (you can customize this part) */}
+      <button onClick={() => handleAddItem({ name: 'New Item', cost: 10.00, image: 'image_url' })}>
+        Add New Item
+      </button>
     </div>
   );
 };
